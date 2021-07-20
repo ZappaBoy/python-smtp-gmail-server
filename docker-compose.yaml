@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  app:
+    container_name: smtp-server
+    image: smtp-server:latest
+    build: .
+    restart: always
+    ports:
+      - ${SERVER_PORT}:5000
+    volumes:
+      - .:/app

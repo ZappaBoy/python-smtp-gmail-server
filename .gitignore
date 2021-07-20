@@ -1,3 +1,9 @@
+# Credentials
+credentials.json
+
+# Environments
+.env
+
 # Logs
 logs
 *.log

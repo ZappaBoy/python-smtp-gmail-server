@@ -1,9 +1,19 @@
+import json
+import os
+
 from flask import Flask, request
 
 from services.smtp_mail_sender import EmailService
 
 app = Flask(__name__)
 sender = EmailService()
+
+dirname = os.path.dirname(__file__)
+credentials_file_path = os.path.join(dirname, './credentials.json')
+with open(credentials_file_path) as json_file:
+    file = json.load(json_file)
+    credential = file["server"]
+    api_key = credential["api_key"]
 
 
 @app.route("/", methods=["GET", "GET"])
@@ -15,11 +25,13 @@ def healthcheck():
 def send_mail():
     request_data = request.get_json()
 
-    receiver = request_data['receiver']
-    subject = request_data['subject']
-    message = request_data['message']
+    status = False
+    if api_key == request_data['apiKey']:
+        receiver = request_data['receiver']
+        subject = request_data['subject']
+        message = request_data['message']
 
-    status = sender.send_mail(receiver, subject, message)
+        status = sender.send_mail(receiver, subject, message)
     return {'status': status}
 
 

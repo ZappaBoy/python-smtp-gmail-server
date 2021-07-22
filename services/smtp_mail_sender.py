@@ -27,7 +27,6 @@ class EmailService:
 
         self.local_domain = "localhost"
         self.local_port = "5000"
-        self.smtp_server.login(self.credential["address"], self.credential["password"])
 
     def send_mail(self, receiver, subject, message):
         """
@@ -40,6 +39,8 @@ class EmailService:
         """
 
         try:
+            self.smtp_server.login(self.credential["address"], self.credential["password"])
+
             msg = MIMEMultipart()
 
             msg["From"] = self.credential["address"]
@@ -51,7 +52,7 @@ class EmailService:
             self.smtp_server.send_message(msg)
             del msg
 
-            # self.smtp_server.close()
+            self.smtp_server.quit()
 
             return True
         except smtplib.SMTPException as e:

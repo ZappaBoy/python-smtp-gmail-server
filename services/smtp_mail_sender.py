@@ -62,35 +62,3 @@ class EmailService:
         finally:
             self.smtp_server.quit()
             return True
-
-    def send_otp(self, receiver, otp):
-        """
-        Send OTP code of the user
-
-        :param receiver: The receiver
-        :param otp: The OTP Code
-        :return: Boolean | SMTPException
-        """
-
-        subject = "RPI-Controller: OTP code"
-        msg = "Your verification code for rpi-app is: \n" + str(otp)
-
-        return self.send_mail(receiver=receiver, subject=subject, message=msg)
-
-    def send_reset_password(self, receiver):
-        """
-        Send a link for reset password to a specific user
-
-        :param receiver: The receiver
-        :return: Boolean | SMTPException
-        """
-
-        change_password_link = self.local_domain + ":" + self.local_port + "/change-password"
-
-        subject = "RPI-Controller: Reset password"
-
-        msg = "Click on the link below to reset your password. \n"
-        msg += change_password_link + "\n\n"
-        msg += "If it was not you who asked to reset the password, we advise you to contact us."
-
-        return self.send_mail(receiver=receiver, subject=subject, message=msg)
